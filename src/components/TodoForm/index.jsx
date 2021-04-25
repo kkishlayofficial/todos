@@ -7,24 +7,23 @@ const TodoForm = (props) => {
 
   useEffect(() => {
     inputRef.current.focus();
-  },[]);
+  }, []);
 
   const changeHandler = (e) => {
     setInput(e.target.value);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
+  const submitHandler = () => {
     props.onSubmit({
-      id: Math.floor(Math.random() * 1000),
+      id: Math.floor(Math.random() * 10000),
       text: input,
     });
 
     setInput("");
   };
+
   return (
-    <form className="todo-form mb-4" onSubmit={submitHandler}>
+    <div className="todo-form mb-4">
       {props.edit ? (
         <>
           <input
@@ -35,7 +34,15 @@ const TodoForm = (props) => {
             onChange={changeHandler}
             ref={inputRef}
           />
-          <button className="todo-button edit">Update</button>
+          <button
+            className="todo-button edit"
+            onClick={() => {
+              submitHandler();
+              props.toggle();
+            }}
+          >
+            Update
+          </button>
         </>
       ) : (
         <>
@@ -48,10 +55,12 @@ const TodoForm = (props) => {
             onChange={changeHandler}
             ref={inputRef}
           />
-          <button className="todo-button">Add Task</button>
+          <button className="todo-button" onClick={submitHandler}>
+            Add Task
+          </button>
         </>
       )}
-    </form>
+    </div>
   );
 };
 
